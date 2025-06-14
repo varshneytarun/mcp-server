@@ -106,18 +106,76 @@ The server runs on stdio transport and communicates via MCP protocol.
 
 ## Integration with MCP Clients
 
-To use this server with an MCP client (like Claude Desktop), add it to your MCP configuration:
+### Method 1: Workspace Configuration (Recommended for sharing with team)
 
+Create the configuration file:
+
+In your VS Code workspace root, create a .vscode/mcp.json file
+
+
+Add your server configuration:
+VS Code MCP Configuration (.vscode/mcp.json)
 ```json
 {
-  "mcpServers": {
-    "api-server": {
+  "servers": {
+    "api-mcp-server": {
+      "type": "stdio",
       "command": "node",
-      "args": ["/path/to/your/server.js"]
+      "args": ["${workspaceFolder}/src/server.js"]
     }
   }
 }
 ```
+
+### Method 2: User Settings (Available across all workspaces)
+
+Open VS Code Settings (Ctrl/Cmd + ,)
+Search for "mcp"
+Add to your settings.json:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "api-mcp-server": {
+        "type": "stdio",
+        "command": "node",
+        "args": ["/full/path/to/your/server.js"]
+      }
+    }
+  }
+}
+```
+
+### Method 3: Using VS Code Commands
+
+* Open Command Palette (Ctrl/Cmd + Shift + P)
+* Run: MCP: Add Server
+* Fill in the details:
+
+Server name: ```api-mcp-server```
+
+Command: ```node```
+
+Args: ```path/to/your/server.js```
+
+
+* Choose: Workspace Settings or User Settings
+
+## Prerequisites
+
+### Enable MCP support:
+
+MCP support is available starting in VS Code release 1.99
+Enable the chat.mcp.enabled setting (enabled by default)
+
+
+### Ensure your server is ready:
+
+Your server.js file is executable
+Dependencies are installed (npm install)
+Server runs without errors when tested standalone
+
 
 ## Adding New APIs
 
